@@ -3,9 +3,9 @@
     <ConfirmModal
       v-if="isVisibleConfirm"
       @toggle-modal="toggleModalRemove"
-      @remove-contact="remove"
+      @remove-item="remove"
     />
-    <NewContactModal
+    <ContactModal
       v-if="isVisibleAdd"
       @toggle-modal="toggleModalAdd"
       @add-contact="add"
@@ -14,6 +14,9 @@
       <div class="contacts__header">
         Contact App –
         <span class="add-contact-btn" @click="addProxy">add new contact</span>
+        <span class="step-back" v-if="prevContacts !== null" @click="stepBack"
+          >step back (last)</span
+        >
       </div>
       <div class="contacts__content">
         <table v-if="contacts.length">
@@ -25,9 +28,14 @@
           <tbody>
             <tr v-for="(item, index) in contacts" :key="index">
               <td>
-                <router-link to="/1" class="contact-link">{{
-                  item.name
-                }}</router-link>
+                <router-link
+                  :to="{
+                    name: 'detail',
+                    params: { id: item.id },
+                  }"
+                  class="contact-link"
+                  >{{ item.name }}</router-link
+                >
               </td>
               <td>
                 <div class="delete-btn" @click="removeProxy(index)">Delete</div>
@@ -46,22 +54,21 @@
 
 <script>
 import ConfirmModal from "@/components/ConfirmModal.vue";
-import NewContactModal from "@/components/NewContactModal.vue";
+import ContactModal from "@/components/ContactModal.vue";
+import data from "../mocks";
 
 export default {
-  name: "Contacts",
+  name: "Home",
   components: {
     ConfirmModal,
-    NewContactModal,
-  },
-  props: {
-    data: Object,
+    ContactModal,
   },
   data() {
     return {
       isVisibleConfirm: false,
       isVisibleAdd: false,
-      contacts: this.data.contacts,
+      contacts: data.contacts,
+      prevContacts: null,
       removeIndex: null,
     };
   },
@@ -76,14 +83,21 @@ export default {
       this.toggleModalAdd();
     },
     add(form) {
+      this.prevContacts = JSON.parse(JSON.stringify(this.contacts));
       this.contacts.push(form);
       this.toggleModalAdd();
+    },
+    stepBack() {
+      const temp = JSON.parse(JSON.stringify(this.prevContacts));
+      this.prevContacts = JSON.parse(JSON.stringify(this.contacts));
+      this.contacts = JSON.parse(JSON.stringify(temp));
     },
     removeProxy(index) {
       this.toggleModalRemove();
       this.removeIndex = index;
     },
     remove() {
+      this.prevContacts = JSON.parse(JSON.stringify(this.contacts));
       this.contacts.splice(this.removeIndex, 1);
       this.toggleModalRemove();
     },
@@ -106,6 +120,7 @@ export default {
 }
 
 .contacts__header {
+  position: relative;
   text-align: center;
   padding: 32px 16px;
   font-size: 18px;
@@ -182,5 +197,17 @@ td {
   display: flex;
   justify-content: center;
   padding: 20px;
+}
+
+.step-back {
+  position: absolute;
+  top: 50;
+  right: 20px;
+  color: #4579f5;
+  cursor: pointer;
+}
+
+.step-back:hover {
+  color: #1358fa;
 }
 </style>

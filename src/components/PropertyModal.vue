@@ -3,12 +3,21 @@
     <div class="modal-mask">
       <div class="modal-wrapper">
         <div class="modal-container">
-          <form @submit="onSubmit">
+          <form @submit.prevent="onSubmit">
             <div class="modal-header">
-              <h3>Add new contact</h3>
+              <h3>Add new property</h3>
             </div>
             <div class="modal-body">
-              <input type="text" v-model="name" />
+              <ul>
+                <li>
+                  <label>Property</label>
+                  <input type="text" v-model="name" />
+                </li>
+                <li>
+                  <label>Value</label>
+                  <input type="text" v-model="value" />
+                </li>
+              </ul>
             </div>
             <div class="modal-footer">
               <button type="submit" class="confirm-btn">OK</button>
@@ -23,10 +32,11 @@
 
 <script>
 export default {
-  name: "ConfirmModal",
+  name: "PropertyModal",
   data() {
     return {
       name: "",
+      value: "",
     };
   },
   methods: {
@@ -34,13 +44,12 @@ export default {
       this.$emit("toggle-modal");
     },
     onSubmit() {
-      if (this.name.trim()) {
-        const newContact = {
-          id: Date.now(),
+      if (this.name.trim() && this.value.trim()) {
+        const newProperty = {
           name: this.name,
+          value: this.value,
         };
-        console.log(newContact);
-        this.$emit("add-contact", newContact);
+        this.$emit("add-item", newProperty);
       }
     },
   },
@@ -115,5 +124,10 @@ input {
 
 .modal-footer {
   display: flex;
+}
+
+li {
+  list-style-type: none;
+  margin-bottom: 10px;
 }
 </style>

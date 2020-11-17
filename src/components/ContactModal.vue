@@ -3,16 +3,18 @@
     <div class="modal-mask">
       <div class="modal-wrapper">
         <div class="modal-container">
-          <div class="modal-header">
-            <h3>Are you sure?</h3>
-          </div>
-          <div class="modal-body">
-            <slot name="body">Information will be lost.</slot>
-          </div>
-          <div class="modal-footer">
-            <div class="confirm-btn" @click="remove">OK</div>
-            <div class="cancel-btn" @click="close">Cancel</div>
-          </div>
+          <form @submit.prevent="onSubmit">
+            <div class="modal-header">
+              <h3>Add new contact</h3>
+            </div>
+            <div class="modal-body">
+              <input type="text" v-model="name" />
+            </div>
+            <div class="modal-footer">
+              <button type="submit" class="confirm-btn">OK</button>
+              <div class="cancel-btn" @click="close">Cancel</div>
+            </div>
+          </form>
         </div>
       </div>
     </div>
@@ -21,22 +23,39 @@
 
 <script>
 export default {
-  name: "ConfirmModal",
+  name: "ContactModal",
+  data() {
+    return {
+      name: "",
+    };
+  },
   methods: {
     close() {
       this.$emit("toggle-modal");
     },
-    remove() {
-      this.$emit("remove-item");
+    onSubmit() {
+      if (this.name.trim()) {
+        const newContact = {
+          id: Date.now(),
+          name: this.name,
+          data: [],
+        };
+        this.$emit("add-contact", newContact);
+      }
     },
   },
 };
 </script>
 
 <style lang="css" scoped>
+input {
+  padding: 8px;
+  outline: none;
+}
+
 .confirm-btn {
-  background-color: #fbf0f0;
-  color: #ca4a4d;
+  background-color: #dde4f5;
+  color: #4579f5;
   height: 30px;
   min-width: 100px;
   line-height: 30px;
@@ -44,6 +63,8 @@ export default {
   border-radius: 5px;
   margin: 0 auto;
   cursor: pointer;
+  outline: none;
+  border: 0px;
 }
 
 .cancel-btn {
@@ -89,7 +110,7 @@ export default {
 }
 
 .modal-body {
-  margin: 20px 0;
+  margin: 20px;
 }
 
 .modal-footer {

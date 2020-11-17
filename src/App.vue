@@ -1,56 +1,15 @@
 <template>
-  <div class="white">
+  <div class="wrapper">
     <header class="container">
       <div class="title">itproject-managment</div>
     </header>
   </div>
-  <Contacts :data="data" />
-
-  <router-view></router-view>
+  <router-view />
 </template>
-
-<script>
-import Contacts from "@/components/Contacts.vue";
-
-/** Начальное состояние */
-const initialState = {
-  contacts: [
-    {
-      id: 1,
-      name: "Adam",
-      mobile: "+79998887744",
-      email: "adam@mail.com",
-    },
-    {
-      id: 2,
-      name: "Igor",
-      mobile: "+79998887743",
-      email: "igor@mail.com",
-    },
-    {
-      id: 3,
-      name: "Stepa",
-      mobile: "+79998887742",
-      email: "stepa@mail.com",
-    },
-  ],
-};
-
-export default {
-  name: "App",
-  components: {
-    Contacts,
-  },
-  data() {
-    return {
-      data: initialState,
-    };
-  },
-};
-</script>
 
 <style>
 @import url("https://fonts.googleapis.com/css2?family=Montserrat&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Montserrat+Alternates&display=swap");
 
 * {
   margin: 0;
@@ -68,9 +27,7 @@ body {
   background-color: #f8f7f8;
 }
 
-@import url("https://fonts.googleapis.com/css2?family=Montserrat+Alternates&display=swap");
-
-.white {
+.wrapper {
   width: 100%;
   background-color: white;
   box-shadow: 0 8px 8px -4px rgba(20, 16, 41, 0.12),
