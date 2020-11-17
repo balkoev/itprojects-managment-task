@@ -1,5 +1,11 @@
 # itprojects-management
 
+My first project with using Vue.
+Vuex technology was not used in this project, so there are places with hardcode.
+
+## Deploy
+https://itprojects-managment-task.vercel.app/
+
 ## Project setup
 ```
 yarn install
